@@ -13,7 +13,10 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
+import br.com.alura.forum.security.JwtAuthenticationFilter;
+import br.com.alura.forum.security.jwt.TokenManager;
 import br.com.alura.forum.service.UsersService;
 
 @Configuration
@@ -22,6 +25,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter{
 	
 	@Autowired
 	private UsersService userService; 
+	@Autowired
+	private TokenManager tokenManager;
 
 		@Override
 		protected void configure(AuthenticationManagerBuilder auth) throws Exception{
@@ -40,7 +45,10 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter{
 		.and()
 			.csrf().disable()
 		.sessionManagement()
-			.sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+			.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+		.and()
+			.addFilterBefore(new JwtAuthenticationFilter(tokenManager, userService),
+					UsernamePasswordAuthenticationFilter.class);
 	}
 	
 	@Override
@@ -54,3 +62,4 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter{
 		return super.authenticationManagerBean();
 	}
 }
+//curl -H "Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJBbHVyYSBGb3J1bSBBUEkiLCJzdWIiOiI0IiwiaWF0IjoxNTY5NjMwNTc5LCJleHAiOjE1NzAyMzUzNzl9._SabxbF7Sa12PL-XbRiB7vVc_6yi7wXpxSWqSOrGygc" -X GET http://localhost:8080/
