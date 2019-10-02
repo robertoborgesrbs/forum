@@ -17,6 +17,7 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.InitBinder;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -25,6 +26,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 import br.com.alura.forum.controller.dto.input.NewTopicInputDto;
 import br.com.alura.forum.controller.dto.input.TopicSearchInputDto;
+import br.com.alura.forum.controller.dto.output.GetTopicOutputDto;
 import br.com.alura.forum.controller.dto.output.TopicBriefOutputDto;
 import br.com.alura.forum.controller.dto.output.TopicDashboardItemOutputDto;
 import br.com.alura.forum.controller.dto.output.TopicOutputDto;
@@ -83,5 +85,12 @@ public class TopicController {
     @InitBinder("newTopicInputDto")
     public void initBinder(WebDataBinder binder, @AuthenticationPrincipal User loggedUser) {
     	binder.addValidators(new NewTopicCustomValidator(this.topicRepository, loggedUser));
+    }
+    
+    @GetMapping(value = "/{id}",produces = MediaType.APPLICATION_JSON_VALUE)
+    public GetTopicOutputDto getTopic(@PathVariable Long id) {
+
+        Topic topic = this.topicRepository.findById(id);
+        return new GetTopicOutputDto(topic);
     }
 }
