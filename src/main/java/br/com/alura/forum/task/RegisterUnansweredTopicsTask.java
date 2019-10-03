@@ -19,8 +19,8 @@ public class RegisterUnansweredTopicsTask {
 	@Autowired
 	private OpenTopicByCategoryRepository openTopicByCategoryRepository;
 	
-//	@Scheduled(cron = "0 0 20 * * *")
-	@Scheduled(cron = "*/10 * * * * *")
+	@Scheduled(cron = "0 0 20 * * *")
+//	@Scheduled(cron = "*/10 * * * * *")
 	public void execute() {
 		List<OpenTopicByCategory> topics =
 				topicRepository.findOpenTopicsByCategory();
