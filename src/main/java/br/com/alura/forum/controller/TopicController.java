@@ -6,6 +6,7 @@ import java.util.List;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -87,6 +88,7 @@ public class TopicController {
     	binder.addValidators(new NewTopicCustomValidator(this.topicRepository, loggedUser));
     }
     
+    @Cacheable(value="topicDetails", key="#id")
     @GetMapping(value = "/{id}",produces = MediaType.APPLICATION_JSON_VALUE)
     public GetTopicOutputDto getTopic(@PathVariable Long id) {
 

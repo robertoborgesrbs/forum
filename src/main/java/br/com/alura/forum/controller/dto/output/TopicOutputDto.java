@@ -1,12 +1,17 @@
 package br.com.alura.forum.controller.dto.output;
 
+import java.io.Serializable;
 import java.time.Instant;
 
 import br.com.alura.forum.model.topic.domain.Topic;
 import br.com.alura.forum.model.topic.domain.TopicStatus;
 
-public class TopicOutputDto {
+public class TopicOutputDto implements Serializable {
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private Long id;
 	private String shortDescription;
 	private String content;
