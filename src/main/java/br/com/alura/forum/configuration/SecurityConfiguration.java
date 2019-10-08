@@ -3,6 +3,7 @@ package br.com.alura.forum.configuration;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.BeanIds;
@@ -20,6 +21,7 @@ import br.com.alura.forum.security.jwt.TokenManager;
 import br.com.alura.forum.service.UsersService;
 
 @Configuration
+@Order(2)
 @EnableWebSecurity
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter{
 	
@@ -36,9 +38,11 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter{
 	
 	@Override
 	protected void configure(HttpSecurity http) throws Exception{
-		http.authorizeRequests()
+		http.antMatcher("/api/**")
+		.authorizeRequests()
 			.antMatchers(HttpMethod.GET,"/api/topics/**").permitAll()
 			.antMatchers("/api/auth/**").permitAll()
+//			.antMatchers("/admin/reports/**").permitAll()
 			.anyRequest().authenticated()
 		.and()
 			.cors()
@@ -53,7 +57,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter{
 	
 	@Override
 	public void configure(WebSecurity web) throws Exception{
-		web.ignoring().antMatchers("/**.html","/v2/api-docs","/webjars/**", "/configuration/**","/swagger-resources/**");
+		web.ignoring().antMatchers("/**.html","/v2/api-docs","/webjars/**", "/configuration/**","/swagger-resources/**",
+									"/css/**","/**.ico","/js/**");
 	}
 	
 	@Override

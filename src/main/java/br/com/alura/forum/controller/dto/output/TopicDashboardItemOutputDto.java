@@ -1,13 +1,12 @@
 package br.com.alura.forum.controller.dto.output;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 import br.com.alura.forum.model.Category;
 import br.com.alura.forum.vo.CategoriesAndTheirStatisticsData;
 import br.com.alura.forum.vo.CategoryStatisticsData;
 
-public class TopicDashboardItemOutputDto {
+public class TopicDashboardItemOutputDto  {
 
 	private String categoryName;
 	private List<String> subcategories;
